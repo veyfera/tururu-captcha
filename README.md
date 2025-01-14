@@ -2,6 +2,7 @@
 
 ## Frontend
 * Vue.js
+* Vue Router
 * TypeScript
 
 ## Backend

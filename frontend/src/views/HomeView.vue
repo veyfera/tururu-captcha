@@ -1,32 +1,29 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
-const router = useRouter();
-let msg = ref('');
+const router = useRouter()
+const msg = ref('')
 
 onMounted(async () => {
-    const res = await fetch('/auth/hello', {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem('auth')}`,
-        } 
-    })
-    if (res.ok) {
-        msg.value = await res.text()
-        console.log(msg)
-    } else {
-        router.push('/login')
-    }
-        })
+  const res = await fetch('/auth/hello', {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('auth')}`,
+    },
+  })
+  if (res.ok) {
+    msg.value = await res.text()
+  } else {
+    router.push('/login')
+  }
+})
 </script>
 
 <template>
   <div class="home">
-    <h1>{{msg}}</h1>
+    <h1>{{ msg }}</h1>
   </div>
 </template>
-
 
 <style>
 @media (min-width: 1024px) {

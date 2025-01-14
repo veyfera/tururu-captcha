@@ -24,8 +24,8 @@ let CaptchaService = class CaptchaService {
         this.captchaRepository = captchaRepository;
     }
     async create() {
-        let captchaImg = new captcha_generator_alphanumeric_1.default();
-        let dataUrl = captchaImg.dataURL;
+        const captchaImg = new captcha_generator_alphanumeric_1.default();
+        const dataUrl = captchaImg.dataURL;
         console.log(captchaImg.value);
         const captcha = new captcha_entity_1.Captcha();
         captcha.value = captchaImg.value;
@@ -40,17 +40,21 @@ let CaptchaService = class CaptchaService {
     }
     async checkCaptcha(checkCaptchaDto) {
         console.log(checkCaptchaDto);
+        if (!checkCaptchaDto.id) {
+            return false;
+        }
         const captcha = await this.captchaRepository.findOne({
             where: {
                 id: checkCaptchaDto.id,
                 timestamp: (0, typeorm_2.Raw)((alias) => `${alias} >= CURRENT_TIMESTAMP - interval ${CAPTCHA_TIMEOUT} minute`),
-            }
+            },
         });
         if (captcha && captcha.value === checkCaptchaDto.value.toUpperCase()) {
-            console.log('OK this is captcha: ', captcha, (0, typeorm_2.Raw)('CURRENT_TIMESTAMP'));
+            console.log("Captcha OK: ", captcha);
+            this.captchaRepository.delete(checkCaptchaDto.id);
             return true;
         }
-        console.log('FAIL this is captcha: ', captcha, (0, typeorm_2.Raw)('CURRENT_TIMESTAMP'));
+        console.log("Captcha failed: ", captcha);
         this.captchaRepository.delete(checkCaptchaDto.id);
         return false;
     }

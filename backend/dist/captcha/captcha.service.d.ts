@@ -1,6 +1,6 @@
-import { Repository } from 'typeorm';
-import { CaptchaDto, CheckCaptchaDto } from './dto/create-captcha.dto';
-import { Captcha } from './captcha.entity';
+import { Repository } from "typeorm";
+import { CaptchaDto, CheckCaptchaDto } from "./dto/create-captcha.dto";
+import { Captcha } from "./captcha.entity";
 export declare class CaptchaService {
     private readonly captchaRepository;
     constructor(captchaRepository: Repository<Captcha>);

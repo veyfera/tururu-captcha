@@ -1,15 +1,9 @@
-export class CaptchaDto {
+export type CaptchaDto = {
   id: number;
   img: string;
-}
+};
 
-export class CheckCaptchaDto {
-    id: number;
-    value: string;
-}
-
-export type AuthF = {
-ok: boolean;
-error?: string;
-token?: string;
-}
+export type CheckCaptchaDto = {
+  id: number;
+  value: string;
+};

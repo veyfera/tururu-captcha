@@ -23,11 +23,8 @@ let AuthController = class AuthController {
         this.authService = authService;
         this.captchaService = captchaService;
     }
-    getProfile(req) {
-        return req.user;
-    }
     getHello() {
-        return 'Authorisation successful';
+        return "Authorisation successful";
     }
     registrationRequest(res) {
         return this.captchaService.create();
@@ -35,41 +32,34 @@ let AuthController = class AuthController {
     async register(registerUserDto) {
         const validCaptcha = await this.captchaService.checkCaptcha({
             id: registerUserDto.captchaId,
-            value: registerUserDto.captcha
+            value: registerUserDto.captcha,
         });
         if (validCaptcha) {
             return this.authService.registerUser(registerUserDto);
         }
-        throw new common_1.UnauthorizedException();
+        throw new common_1.UnauthorizedException("Captcha verification failed");
     }
     async login(loginUserDto) {
         const validCaptcha = await this.captchaService.checkCaptcha({
             id: loginUserDto.captchaId,
-            value: loginUserDto.captcha
+            value: loginUserDto.captcha,
         });
         if (validCaptcha) {
-            return this.authService.signIn(loginUserDto);
+            return this.authService.login(loginUserDto);
         }
-        throw new common_1.UnauthorizedException();
+        throw new common_1.UnauthorizedException("Captcha verification failed");
     }
 };
 exports.AuthController = AuthController;
 __decorate([
-    (0, common_1.Get)('profile'),
-    __param(0, (0, common_1.Request)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], AuthController.prototype, "getProfile", null);
-__decorate([
-    (0, common_1.Get)('hello'),
+    (0, common_1.Get)("hello"),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], AuthController.prototype, "getHello", null);
 __decorate([
     (0, public_decorator_1.Public)(),
-    (0, common_1.Get)('captcha'),
+    (0, common_1.Get)("captcha"),
     __param(0, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Response]),
@@ -77,7 +67,7 @@ __decorate([
 ], AuthController.prototype, "registrationRequest", null);
 __decorate([
     (0, public_decorator_1.Public)(),
-    (0, common_1.Post)('register'),
+    (0, common_1.Post)("register"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [login_user_dto_1.LoginUserDto]),
@@ -85,14 +75,14 @@ __decorate([
 ], AuthController.prototype, "register", null);
 __decorate([
     (0, public_decorator_1.Public)(),
-    (0, common_1.Post)('login'),
+    (0, common_1.Post)("login"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [login_user_dto_1.LoginUserDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 exports.AuthController = AuthController = __decorate([
-    (0, common_1.Controller)('auth'),
+    (0, common_1.Controller)("auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService,
         captcha_service_1.CaptchaService])
 ], AuthController);

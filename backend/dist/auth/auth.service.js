@@ -20,15 +20,15 @@ let AuthService = class AuthService {
         this.usersService = usersService;
         this.jwtService = jwtService;
     }
-    async signIn(loginUserDto) {
+    async login(loginUserDto) {
         const user = await this.usersService.findByUsername(loginUserDto.username);
-        console.log('found user: ', user);
-        console.log(loginUserDto);
-        if (!(0, bcryptjs_1.compareSync)(loginUserDto.password, user?.password)) {
-            console.log('password does not match');
-            throw new common_1.UnauthorizedException();
+        console.log("found user: ", user);
+        if (!user || !(0, bcryptjs_1.compareSync)(loginUserDto.password, user?.password)) {
+            console.log("password does not match");
+            throw new common_1.UnauthorizedException("Wrong username or password");
         }
         const payload = { username: user.username, sub: user.id };
+        console.log("sendign jwt token");
         return {
             access_token: await this.jwtService.signAsync(payload),
         };
@@ -36,19 +36,24 @@ let AuthService = class AuthService {
     async registerUser(registerUserDto) {
         const validEmail = registerUserDto.username.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
         if (!validEmail) {
-            console.log('Email format is invalid');
-            throw new common_1.BadRequestException('Email format is invalid');
+            console.log("Email format is invalid");
+            throw new common_1.BadRequestException("Email format is invalid");
         }
         const userExists = await this.usersService.findByUsername(registerUserDto.username);
         if (userExists) {
-            console.log('This email is already registered. Please choose another one');
-            throw new common_1.BadRequestException('This email is already registered. Please choose another one');
+            console.log("This email is already registered. Please choose another one");
+            throw new common_1.BadRequestException("This email is already registered. Please choose another one");
+        }
+        const validPassword = registerUserDto.password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}$/);
+        if (!validPassword) {
+            console.log("Password must be at least 8 characters long contain a number and an uppercase letter");
+            throw new common_1.BadRequestException("Password must be at least 8 characters long contain a number and an uppercase letter");
         }
         registerUserDto.password = (0, bcryptjs_1.hashSync)(registerUserDto.password, SALT_ROUNNDS);
         const user = await this.usersService.create(registerUserDto);
-        console.log('succesfuly created new user');
+        console.log("succesfuly created new user");
         const payload = { username: user.username, sub: user.id };
-        console.log('sendign jwt token');
+        console.log("sendign jwt token");
         return {
             access_token: await this.jwtService.signAsync(payload),
         };

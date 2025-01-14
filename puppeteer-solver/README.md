@@ -6,13 +6,11 @@ This code example demonstrates how to automate solving a reCAPTCHA using the [Pu
 
 ## How to start:
 
-### Cloning
-
-`git clone https://github.com/dzmitry-duboyski/solving-recaptcha-using-puppeteer.git`
-
 ### Install dependencies
 
 `npm install`
+
+### Set your email and password on lines 18, 19
 
 ### Set your APIKEY in `.env` file
 

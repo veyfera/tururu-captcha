@@ -14,9 +14,6 @@ async function getCaptcha() {
 }
 
 async function solveCaptcha(captcha) {
-//async function solveCaptcha() {
-    //const captcha = await getCaptcha()
-    
     const res = await solver.imageCaptcha({
         body: captcha,
         numeric: 0,
@@ -25,20 +22,6 @@ async function solveCaptcha(captcha) {
     })
     console.log(res)
     return res
-
-    //solver.imageCaptcha({
-        ////body: imageBase64,
-        //body: captcha.img,
-        //numeric: 0,
-        //min_len: 6,
-        //max_len: 6
-    //})
-    //.then((res) => {
-    //console.log(res);
-    //})
-    //.catch((err) => {
-    //console.log(err);
-    //})
 }
 
 async function login(email, password) {
@@ -67,7 +50,6 @@ async function login(email, password) {
         return true
     } else {
         console.log('login failed')
-        //throw new Error('Something went wrong, we are workingon it, please try again after some time')
         return false
     }
 }
@@ -75,7 +57,7 @@ async function login(email, password) {
 async function showDashboard() {
     let logedIn = false;
     while(!logedIn) {
-        logedIn = await login('fdasf@jlkjlkgk.fudsafoi', 'Ab!12345')
+        logedIn = await login('email@mail.com', 'Ab!12345')
     }
     
     const res = await fetch('http://localhost:3000/auth/hello', {
@@ -88,6 +70,4 @@ async function showDashboard() {
     return data
 }
 
-
-//solveCaptcha()
 showDashboard()

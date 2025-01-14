@@ -11,8 +11,6 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { User } from "./user.entity";
 import { UsersService } from "./users.service";
 
-import { Public } from "../auth/decorators/public.decorator";
-
 @Controller("users")
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -22,7 +20,6 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Public()
   @Get()
   findAll(): Promise<User[]> {
     return this.usersService.findAll();
